@@ -1,9 +1,9 @@
-import { behavesLikeRescuable } from "./Rescuable.behavior";
 import {
   FiatTokenV11Instance,
   RescuableInstance,
 } from "../../@types/generated";
 import { usesOriginalStorageSlotPositions } from "../helpers/storageSlots.behavior";
+import { behavesLikeRescuable } from "./Rescuable.behavior";
 
 const FiatTokenV1_1 = artifacts.require("FiatTokenV1_1");
 
@@ -14,9 +14,9 @@ contract("FiatTokenV1_1", (accounts) => {
     fiatToken = await FiatTokenV1_1.new();
     const owner = accounts[0];
     await fiatToken.initialize(
-      "USD Coin",
-      "USDC",
-      "USD",
+      "TZS Coin",
+      "TZSC",
+      "TZS",
       6,
       owner,
       owner,

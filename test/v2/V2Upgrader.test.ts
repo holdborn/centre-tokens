@@ -1,12 +1,12 @@
 import crypto from "crypto";
 import {
+  FiatTokenProxyInstance,
   FiatTokenV1Instance,
   FiatTokenV2Instance,
-  FiatTokenProxyInstance,
 } from "../../@types/generated";
+import { expectRevert, hexStringFromBuffer } from "../helpers";
+import { ACCOUNTS_AND_KEYS, MAX_UINT256 } from "../helpers/constants";
 import { signTransferAuthorization } from "./GasAbstraction/helpers";
-import { MAX_UINT256, ACCOUNTS_AND_KEYS } from "../helpers/constants";
-import { hexStringFromBuffer, expectRevert } from "../helpers";
 
 const FiatTokenProxy = artifacts.require("FiatTokenProxy");
 const FiatTokenV1 = artifacts.require("FiatTokenV1");
@@ -50,9 +50,9 @@ contract("V2Upgrader", (accounts) => {
       );
       expect(await upgrader.helper()).not.to.be.empty;
       expect(await upgrader.newProxyAdmin()).to.equal(originalProxyAdmin);
-      expect(await upgrader.newName()).to.equal("USD Coin");
+      expect(await upgrader.newName()).to.equal("TZS Coin");
 
-      // Transfer 0.2 USDC to the contract
+      // Transfer 0.2 TZSC to the contract
       await proxyAsV1.transfer(upgrader.address, 2e5, { from: minter });
 
       // Transfer admin role to the contract
@@ -72,7 +72,7 @@ contract("V2Upgrader", (accounts) => {
       );
 
       // Test that things work as expected
-      expect(await proxyAsV2.name()).to.equal("USD Coin");
+      expect(await proxyAsV2.name()).to.equal("TZS Coin");
       expect((await proxyAsV2.balanceOf(upgrader.address)).toNumber()).to.equal(
         0
       );
@@ -158,11 +158,11 @@ contract("V2Upgrader", (accounts) => {
         fiatTokenProxy.address,
         fiatTokenV1_1.address, // provide V1.1 implementation instead of V2
         originalProxyAdmin,
-        "USD Coin",
+        "TZS Coin",
         { from: upgraderOwner }
       );
 
-      // Transfer 0.2 USDC to the contract
+      // Transfer 0.2 TZSC to the contract
       await proxyAsV1.transfer(upgrader.address, 2e5, { from: minter });
 
       // Transfer admin role to the contract
@@ -193,11 +193,11 @@ contract("V2Upgrader", (accounts) => {
         fiatTokenProxy.address,
         v2Implementation.address,
         originalProxyAdmin,
-        "USD Coin",
+        "TZS Coin",
         { from: upgraderOwner }
       );
 
-      // Transfer 0.2 USDC to the contract
+      // Transfer 0.2 TZSC to the contract
       await proxyAsV1.transfer(upgrader.address, 2e5, { from: minter });
 
       // Transfer admin role to the contract

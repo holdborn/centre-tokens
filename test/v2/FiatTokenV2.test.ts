@@ -1,10 +1,10 @@
-import { behavesLikeRescuable } from "../v1.1/Rescuable.behavior";
 import { FiatTokenV2Instance, RescuableInstance } from "../../@types/generated";
+import { expectRevert } from "../helpers";
 import { usesOriginalStorageSlotPositions } from "../helpers/storageSlots.behavior";
-import { hasSafeAllowance } from "./safeAllowance.behavior";
+import { behavesLikeRescuable } from "../v1.1/Rescuable.behavior";
 import { hasGasAbstraction } from "./GasAbstraction/GasAbstraction.behavior";
 import { makeDomainSeparator } from "./GasAbstraction/helpers";
-import { expectRevert } from "../helpers";
+import { hasSafeAllowance } from "./safeAllowance.behavior";
 
 const FiatTokenV2 = artifacts.require("FiatTokenV2");
 
@@ -15,16 +15,16 @@ contract("FiatTokenV2", (accounts) => {
   beforeEach(async () => {
     fiatToken = await FiatTokenV2.new();
     await fiatToken.initialize(
-      "USD Coin",
-      "USDC",
-      "USD",
+      "TZS Coin",
+      "TZSC",
+      "TZS",
       6,
       fiatTokenOwner,
       fiatTokenOwner,
       fiatTokenOwner,
       fiatTokenOwner
     );
-    await fiatToken.initializeV2("USD Coin", { from: fiatTokenOwner });
+    await fiatToken.initializeV2("TZS Coin", { from: fiatTokenOwner });
   });
 
   behavesLikeFiatTokenV2(accounts, () => fiatToken, fiatTokenOwner);
@@ -39,7 +39,7 @@ export function behavesLikeFiatTokenV2(
 
   beforeEach(async () => {
     domainSeparator = makeDomainSeparator(
-      "USD Coin",
+      "TZS Coin",
       "2",
       1, // hardcoded to 1 because of ganache bug: https://github.com/trufflesuite/ganache/issues/1643
       getFiatToken().address
@@ -70,7 +70,7 @@ export function behavesLikeFiatTokenV2(
   it("disallows calling initializeV2 twice", async () => {
     // It was called once in beforeEach. Try to call again.
     await expectRevert(
-      getFiatToken().initializeV2("Not USD Coin", { from: fiatTokenOwner })
+      getFiatToken().initializeV2("Not TZS Coin", { from: fiatTokenOwner })
     );
   });
 }
